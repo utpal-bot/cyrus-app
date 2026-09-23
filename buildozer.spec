@@ -1,44 +1,21 @@
-name: CI
+[app]
+title = Cyrus
+package.name = cyrusai
+package.domain = org.rudra
+source.dir = .
+source.include_exts = py,png,jpg,kv,atlas
+version = 1.0
+requirements = python3,kivy
+orientation = portrait
+fullscreen = 1
+android.archs = arm64-v8a
+android.api = 33
+android.minapi = 21
+android.accept_sdk_license = True
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+[buildozer]
+log_level = 2
+warn_on_root = 1
 
-jobs:
-  build:
-    runs-on: ubuntu-22.04
 
-    steps:
-      - uses: actions/checkout@v4
-
-      # Buildozer cache taaki build fast ho
-      - name: Get Date
-        id: get-date
-        run: |
-          echo "date=$(date -u +'%Y%m%d')" >> $GITHUB_OUTPUT
-        shell: bash
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
-          pip install --upgrade pip
-          pip install Cython==0.29.36 buildozer
-
-      - name: Build with Buildozer
-        run: |
-          buildozer android debug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: Cyrus-APK
-          path: bin/*.apk
+ 
